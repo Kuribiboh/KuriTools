@@ -1,0 +1,49 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2821
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 param (\
+    [string]$BasePath = $PSScriptRoot # fallback if run manually\
+)\
+\
+# balenaEtcher\
+$apiUrl = "https://api.github.com/repos/balena-io/etcher/releases/latest"\
+$targetDir = "$BasePath\\Tools\\Windows\\BalenaEtcher"\
+$workingDir = "$BasePath\\Tools\\Temp"\
+$tempExe = "$workingDir\\balenaetcher-setup-temp.exe"\
+$finalExe = "$targetDir\\BalenaEtcher.exe"\
+\
+# Ensure working and target directories exist\
+New-Item -ItemType Directory -Force -Path $workingDir | Out-Null\
+New-Item -ItemType Directory -Force -Path $targetDir | Out-Null\
+\
+# Get latest release info and locate the Windows Setup EXE\
+try \{\
+    $releaseInfo = Invoke-RestMethod -Uri $apiUrl -Headers @\{ "User-Agent" = "PowerShell" \}\
+    $asset = $releaseInfo.assets | Where-Object \{ $_.name -like "*Setup.exe" \} | Select-Object -First 1\
+    if (-not $asset) \{\
+        Write-Host "\uc0\u10060  No Windows setup executable found in latest release."\
+        exit\
+    \}\
+    $downloadUrl = $asset.browser_download_url\
+\} catch \{\
+    Write-Host "\uc0\u10060  Failed to retrieve balenaEtcher release info from GitHub."\
+    exit\
+\}\
+\
+# Download EXE\
+try \{\
+    Invoke-WebRequest -Uri $downloadUrl -OutFile $tempExe\
+    Write-Host "\uc0\u9989  Downloaded balenaEtcher setup from: $downloadUrl"\
+\} catch \{\
+    Write-Host "\uc0\u10060  Failed to download balenaEtcher EXE."\
+    exit\
+\}\
+\
+# Move and rename to final destination\
+Move-Item -Path $tempExe -Destination $finalExe -Force\
+\
+Write-Host "\uc0\u9989  balenaEtcher saved as: $finalExe"}
