@@ -5,7 +5,7 @@ REM Get the batch file’s directory
 set "basedir=%~dp0"
 
 REM Path to the PowerShell scripts
-set "ps1folder=%basedir%Downloaders"
+set "ps1folder=%basedir%Sources"
 
 REM Run each script, passing the base dir to it
 for %%F in ("%ps1folder%\*.ps1") do (
