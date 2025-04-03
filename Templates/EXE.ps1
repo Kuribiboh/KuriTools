@@ -3,9 +3,10 @@ param (
 )
 
 # "App Name"
+$appname = "App Name"
 $downloadUrl = "Download URL"
-$targetDir = "$BasePath\Tools\Windows\App Name"
-$exeName = "App Name.exe"
+$targetDir = "$BasePath\Tools\Windows\$appname"
+$exeName = "$appname.exe"
 $tempExe = "$BasePath\Tools\Temp\$exeName"
 
 # Ensure working and target directories exist
@@ -18,4 +19,4 @@ Invoke-WebRequest -Uri $downloadUrl -OutFile $tempExe
 # Move the EXE to the target directory
 Move-Item -Path $tempExe -Destination "$targetDir\$exeName" -Force
 
-Write-Host "App Name downloaded to: $targetDir\$exeName"
+Write-Host "$appname downloaded to: $targetDir\$exeName"

@@ -3,10 +3,11 @@ param (
 )
 
 # App Name
+$appname = "App Name"
 $downloadUrl = "Download URL"
-$targetDir = "$BasePath\Tools\Windows\HDSentinel"
+$targetDir = "$BasePath\Tools\Windows\$appname"
 $workingDir = "$BasePath\Tools\Temp"
-$tempZip = "$workingDir\App Name.zip"
+$tempZip = "$workingDir\$appname.zip"
 $tempExtract = "$workingDir\extract"
 
 # Clean up working directory
@@ -33,4 +34,4 @@ if ($innerFolder) {
 # Clean up
 Remove-Item -Recurse -Force $workingDir
 
-Write-Host "App Name extracted to: $targetDir"
+Write-Host "$appname extracted to: $targetDir"
