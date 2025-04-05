@@ -13,3 +13,8 @@ Plans
 - Add react native
 - Clean up code base
 - Add ISOS
+ - Freedos
+ - Tails
+ - Windows live
+ - linux
+ - 
